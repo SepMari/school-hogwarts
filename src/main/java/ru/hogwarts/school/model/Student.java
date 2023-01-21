@@ -1,28 +1,20 @@
 package ru.hogwarts.school.model;
 
 
-import org.springframework.data.annotation.Id;
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
+import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
 public class Student {
 
-    @javax.persistence.Id
     @Id
     @GeneratedValue
     private Long id;
     private String name;
-    private int age;
+    private Long age;
 
-//    public Student(Long id, String name, int age) {
-//        this.id = id;
-//        this.name = name;
-//        this.age = age;
-//    }
-
+    @ManyToOne
+    private Faculty faculty;
 
     public String getName() {
         return name;
@@ -32,11 +24,11 @@ public class Student {
         this.name = name;
     }
 
-    public int getAge() {
+    public Long getAge() {
         return age;
     }
 
-    public void setAge(int age) {
+    public void setAge(Long age) {
         this.age = age;
     }
 
