@@ -5,10 +5,7 @@ import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repository.FacultyRepository;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 
 
@@ -43,19 +40,23 @@ public class FacultyService {
     }
 
     //фильтрация по цвету
-    public Collection<Faculty> findColor(String color) {
-        ArrayList<Faculty> result = new ArrayList<>();
-        for (Faculty faculty : facultyRepository.findAll()) {
-            if (Objects.equals(faculty.getColor(), color)) {
-                result.add(faculty);
-            }
-        }
-        return result;
+    public Collection<Faculty> findByColor(String color) {
+        return facultyRepository.findByColorIgnoreCase(color);
     }
 
     //поиск по цвету или названию факультета
     public Collection<Faculty> findByNameOrColor(String name, String color) {
         return facultyRepository.findByNameIgnoreCaseOrColorIgnoreCase(name, color);
+    }
+
+    //студенты по id факультета
+    public Collection<Student> findStudentsByFaculty(Long id) {
+        Optional<Faculty> faculty = findById(id);
+        return faculty.map(Faculty::getStudent).orElse(null);
+    }
+
+    public Optional<Faculty> findById(long id) {
+        return facultyRepository.findById(id);
     }
 
     public Collection<Faculty> getAllFaculty() {

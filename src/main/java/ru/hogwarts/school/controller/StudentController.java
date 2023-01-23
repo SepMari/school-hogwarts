@@ -63,13 +63,15 @@ public class StudentController {
     }
 
 
-    @GetMapping(path = "faculty/{faculty_id}")
-    public ResponseEntity<Collection<Student>> findStudentsByFaculty(@PathVariable Long faculty_id) {
-        Collection<Student> students = studentService.findStudentsByFaculty(faculty_id);
-        if (faculty_id == null) {
+    //студенты факультета по id
+    @GetMapping(path = "faculty/{id}")
+    public ResponseEntity<Faculty> findFacultyByStudentId(@PathVariable Long id) {
+        Faculty faculty = studentService.findFacultyByStudentId(id);
+        if (faculty == null) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(students);
+        return ResponseEntity.ok(faculty);
     }
+
 
 }

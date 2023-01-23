@@ -5,10 +5,7 @@ import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repository.StudentRepository;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Objects;
+import java.util.*;
 
 @Service
 public class StudentService {
@@ -42,13 +39,7 @@ public class StudentService {
 
     //фильтрация студентов по возрасту
     public Collection<Student> findAge(Long age) {
-        ArrayList<Student> result = new ArrayList<>();
-        for (Student student : studentRepository.findAll()) {
-            if (Objects.equals(student.getAge(), age)) {
-                result.add(student);
-            }
-        }
-        return result;
+        return studentRepository.findByAge(age);
     }
 
     //поиск по возрасту между мин и макс
@@ -56,9 +47,14 @@ public class StudentService {
         return studentRepository.findByAgeBetween(minAge, maxAge);
     }
 
-    //поиск студентов по факультету
-    public Collection<Student> findStudentsByFaculty (Long faculty_id) {
-        return studentRepository.findStudentsByFaculty_Id(faculty_id);
+    //факультет по id студента
+    public Faculty findFacultyByStudentId(Long id) {
+        Optional<Student> temp = findById(id);
+        return temp.map(Student::getFaculty).orElse(null);
+    }
+
+    public Optional<Student> findById(long id) {
+        return studentRepository.findById(id);
     }
 
     public Collection<Student> getAllStudent() {
