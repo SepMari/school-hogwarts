@@ -20,6 +20,7 @@ public class Student {
     @JsonBackReference
     private Faculty faculty;
 
+
     public Faculty getFaculty() {
         return faculty;
     }
