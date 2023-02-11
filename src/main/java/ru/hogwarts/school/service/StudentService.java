@@ -1,5 +1,7 @@
 package ru.hogwarts.school.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ru.hogwarts.school.model.AvatarStudent;
@@ -17,55 +19,68 @@ public class StudentService {
         this.studentRepository = studentRepository;
     }
 
+    Logger logger = LoggerFactory.getLogger(StudentService.class);
+
     //CRUD
     //Create (создание)
     public Student createStudent(Student student) {
+        logger.info("Was invoked method for create student");
         return studentRepository.save(student);
     }
 
     //Read (чтение)
     public Student findStudent(long id) {
+        logger.debug("Was invoked method to find a student by id = {}", id);
         return studentRepository.findById(id).get();
     }
 
     //Update (изменение)
     public Student editStudent(Student student) {
+        logger.info("Was invoked method for edit student");
         return studentRepository.save(student);
     }
 
     //Delete (удаление)
     public void removeStudent(long id) {
+        logger.debug("Was invoked method to remove a student by id = {}", id);
         studentRepository.deleteById(id);
     }
 
     //фильтрация студентов по возрасту
     public Collection<Student> findAge(Long age) {
+        logger.info("Was invoked method for find student by age");
         return studentRepository.findByAge(age);
     }
 
     //поиск по возрасту между мин и макс
     public Collection<Student> findByAgeBetween(Long minAge, Long maxAge) {
+        logger.info("Was invoked method for find student by age in interval min and max");
         return studentRepository.findByAgeBetween(minAge, maxAge);
     }
 
     //студенты по id факультета
     public Collection<Student> findStudentsByFaculty_Id(Long id) {
+        logger.info("Was invoked method for find students by faculties");
         return studentRepository.findStudentsByFaculty_Id(id);
     }
 
     public Collection<Student> getAllStudent() {
+        logger.info("Was invoked method for find all students");
         return studentRepository.findAll();
     }
 
     public Integer getCountStudents() {
+        logger.info("Was invoked method for find all students in count");
         return studentRepository.getCount();
     }
 
     public Integer getAvgAgeStudents() {
+        logger.info("Was invoked method for get average age students");
         return studentRepository.getAvgAgeStudents();
     }
 
     public List<Student> getLastFive() {
+        logger.info("Was invoked method for get last five students");
         return studentRepository.getLastFive();
     }
 

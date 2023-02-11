@@ -1,5 +1,7 @@
 package ru.hogwarts.school.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -30,6 +32,8 @@ public class AvatarStudentService {
     private final StudentService studentService;
     private final AvatarStudentRepository avatarStudentRepository;
 
+    Logger logger = LoggerFactory.getLogger(AvatarStudentService.class);
+
     public AvatarStudentService(StudentService studentService, AvatarStudentRepository avatarStudentRepository) {
         this.studentService = studentService;
         this.avatarStudentRepository = avatarStudentRepository;
@@ -57,9 +61,12 @@ public class AvatarStudentService {
         avatarStudent.setMediaType(file.getContentType());
         avatarStudent.setData(file.getBytes());
         avatarStudentRepository.save(avatarStudent);
+
+        logger.error("There is not student with id = {}", id);
     }
 
     public AvatarStudent findAvatarStudent(Long id) {
+        logger.info("Was invoked method for find avatar student");
         return avatarStudentRepository.findByStudentId(id).orElse(new AvatarStudent());
     }
 
@@ -86,6 +93,7 @@ public class AvatarStudentService {
 
 
     public List<AvatarStudent> getAllAvatars(int page, int size) {
+        logger.info("Was invoked method for get all avatars");
         return avatarStudentRepository.findAll(PageRequest.of(page - 1, size)).getContent();
     }
 }
