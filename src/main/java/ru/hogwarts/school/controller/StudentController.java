@@ -131,7 +131,7 @@ public class StudentController {
     }
 
     @GetMapping("/avgAge")
-    public int getAvgAgeStudents() {
+    public String getAvgAgeStudents() {
         return studentService.getAvgAgeStudents();
     }
 
@@ -143,5 +143,14 @@ public class StudentController {
     @GetMapping("/getAvatarsPage")
     public ResponseEntity<?> getAllAvatars(@RequestParam("page") int page, @RequestParam("size") int size) {
         return ResponseEntity.ok(avatarStudentService.getAllAvatars(page, size));
+    }
+
+    @GetMapping("/get-start-a")
+    public ResponseEntity<List<Student>> getStudentsStartA() {
+        List<Student> student = studentService.findStudentStartA();
+        if (student == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(student);
     }
 }

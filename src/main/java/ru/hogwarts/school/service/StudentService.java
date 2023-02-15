@@ -1,9 +1,11 @@
 package ru.hogwarts.school.service;
 
+import liquibase.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import ru.hogwarts.school.model.AvatarStudent;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repository.StudentRepository;
@@ -74,9 +76,14 @@ public class StudentService {
         return studentRepository.getCount();
     }
 
-    public Integer getAvgAgeStudents() {
+    public String getAvgAgeStudents() {
         logger.info("Was invoked method for get average age students");
-        return studentRepository.getAvgAgeStudents();
+        Double result = studentRepository.findAll()
+                .stream()
+                .parallel()
+                .mapToDouble(Student::getAge)
+                .average().orElse(0);
+        return String.format("%.1f", result);
     }
 
     public List<Student> getLastFive() {
@@ -84,4 +91,13 @@ public class StudentService {
         return studentRepository.getLastFive();
     }
 
+    public List<Student> findStudentStartA() {
+        logger.info("Was invoked method for get student name starts with A");
+        return studentRepository.findAll()
+                .stream()
+                .parallel()
+                .filter(a -> StringUtils.startsWithIgnoreCase(a.getName(), "A"))
+                .sorted(Comparator.comparing(Student::getName))
+                .toList();
+    }
 }

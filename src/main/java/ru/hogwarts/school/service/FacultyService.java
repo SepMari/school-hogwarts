@@ -75,4 +75,13 @@ public class FacultyService {
         return facultyRepository.findAll();
     }
 
+    public String getBigName() {
+        logger.info("Was invoked method for find big name faculty");
+        Optional<Faculty> faculty = facultyRepository.findAll()
+                .stream()
+                .parallel()
+                .reduce((left, right) -> left.getName().length() > right.getName().length() ? left : right);
+        return faculty.isPresent() ? faculty.get().getName() : "";
+    }
+
 }

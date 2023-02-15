@@ -68,4 +68,9 @@ public class FacultyController {
         return ResponseEntity.ok(faculty);
     }
 
+    @GetMapping("/big-name")
+    public ResponseEntity<?> getBigName() {
+        return ResponseEntity.ok(facultyService.getBigName());
+    }
+
 }
