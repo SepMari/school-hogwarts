@@ -153,4 +153,16 @@ public class StudentController {
         }
         return ResponseEntity.ok(student);
     }
+
+    //потоки
+    @GetMapping("/print-in-console")
+    public ResponseEntity<?> printInConsole() {
+        studentService.printInConsole();
+        return ResponseEntity.ok("ок");
+    }
+    @GetMapping("/print-in-console-sync")
+    public ResponseEntity<?> printInConsoleSync() {
+        studentService.printInConsoleSynchronized();
+        return ResponseEntity.ok("ок");
+    }
 }

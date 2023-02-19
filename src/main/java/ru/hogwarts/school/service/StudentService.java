@@ -100,4 +100,51 @@ public class StudentService {
                 .sorted(Comparator.comparing(Student::getName))
                 .toList();
     }
+
+    //потоки
+    public void printInConsole() {
+        List<Student> students = studentRepository.findAll();
+        printAll(students);
+
+        System.out.println(students.get(0).getName());
+        System.out.println(students.get(1).getName());
+
+        new Thread(() -> {
+            System.out.println(students.get(2).getName());
+            System.out.println(students.get(3).getName());
+        }).start();
+
+        new Thread(() -> {
+            System.out.println(students.get(4).getName());
+            System.out.println(students.get(5).getName());
+        }).start();
+    }
+
+    public void printInConsoleSynchronized() {
+        List<Student> students = studentRepository.findAll();
+        printAll(students);
+
+        print(students.get(0));
+        print(students.get(1));
+
+        new Thread(() -> {
+            print(students.get(2));
+            print(students.get(3));
+        }).start();
+
+        new Thread(() -> {
+            print(students.get(4));
+            print(students.get(5));
+        }).start();
+    }
+
+    private synchronized void print(Student student) {
+        System.out.println(student.getName());
+    }
+
+    private void printAll(Collection<Student> students) {
+        System.out.println("Было:");
+        students.forEach(student -> System.out.println(student.getName()));
+        System.out.println("Стало:");
+    }
 }
